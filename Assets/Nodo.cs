@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class Nodo
 {
+    //Array con las 9 casillas del puzzle
     int[] piezas = new int[9];
 
     
     //El constructor por defecto iniciará el nodo al resultado meta
+    //(con los números del 0 al 8 colocados en orden)
     public Nodo()
     {
         for(int i = 0; i < 9; i++)
