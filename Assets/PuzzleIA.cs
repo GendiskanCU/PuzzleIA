@@ -59,6 +59,7 @@ public class PuzzleIA : MonoBehaviour
         //Incluye los primeros sucesores en la lista de abiertos
         foreach(Nodo n in nodosSucesores)
             nodosAbiertos.Add(n);
+        
         //El primer nodo actual se añade a la lista de cerrados
         nodosCerrados.Add(nodoActual);
         
@@ -67,10 +68,12 @@ public class PuzzleIA : MonoBehaviour
         while(nodosAbiertos.Count > 0)
         {
             numeroIntentos++;
+            Debug.Log("Intentos: " + numeroIntentos);
             //El primer nodo abierto se convierte en el actual
             nodoActual.CopiarEstado(nodosAbiertos[0]);
             //Lo sacamos de abiertos
-            nodosAbiertos.Remove(nodosAbiertos[0]);
+            nodosAbiertos.RemoveAt(0);
+            Debug.Log("Nodos abiertos: " + nodosAbiertos.Count + (nodosAbiertos.Count > 0));
             //Añadimos el nodo actual a cerrados
             nodosCerrados.Add(nodoActual);
 
@@ -84,16 +87,18 @@ public class PuzzleIA : MonoBehaviour
             else
             {
                 //Obtiene los sucesores del nodo actual
+                nodosSucesores.Clear();
                 nodosSucesores = nodoActual.ObtenerSucesores();
                 //Añadimos a abiertos los sucesores que no estén ya en abiertos o cerrados
                 //Primero obtenemos la posición de los sucesores a añadir
                 List<int> posiciones = ObtieneIndicesNodosNuevos();
                 if(posiciones.Count > 0)
                 {
+                    Debug.Log("Índices recibidos + " + posiciones.Count);
                     foreach(int posicion in posiciones)
                     {
                         nodosAbiertos.Add(nodosSucesores[posicion]);
-                    }
+                    }                    
                 }                
             }
         }
@@ -105,10 +110,20 @@ public class PuzzleIA : MonoBehaviour
 
        for(int s = 0; s < nodosSucesores.Count; s++)
        {
-            Debug.Log(nodosSucesores.Count + "  " + nodosAbiertos.Count);
-            Debug.Log(nodosSucesores[s].EsIgualA(nodosAbiertos[0]));
+            //Debug.Log(nodosSucesores.Count + "  " + nodosAbiertos.Count);
+            //Debug.Log(nodosSucesores[s].EsIgualA(nodosAbiertos[0]));
+            
+            //El nodo NO estará en alguna de las listas si la misma está vacía o tiene elementos pero no contiene al nodo
+            bool estaEnAbiertos = (nodosAbiertos.Count > 0 && nodosAbiertos.Contains(nodosSucesores[s]));
+            bool estaEnCerrados = (nodosCerrados.Count > 0 && nodosCerrados.Contains(nodosSucesores[s]));
+
+            if(!estaEnAbiertos && !estaEnCerrados)
+                indices.Add(s);
+            foreach(int indice in indices)
+                Debug.Log(indice);
        }
 
+        
         return indices;
     }
 
