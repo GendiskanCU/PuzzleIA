@@ -155,7 +155,7 @@ public class Nodo
 
     
     /// <summary>
-    /// Representa el nodo
+    /// Representa el nodo en forma de cadena de caracteres
     /// </summary>
     /// <returns>un strign con la representación del nodo</returns> <summary>    
     public string Dibujar()
@@ -171,5 +171,25 @@ public class Nodo
         nodoDibujado += "\n";
 
         return nodoDibujado;
+    }
+
+    /// <summary>
+    /// Comprueba si un nodo se encuentra en una lista de nodos
+    /// </summary>
+    /// <param name="nodoABuscar"></param>
+    /// <param name="listaDeNodos"></param>
+    /// <returns>true/false si/no se encuentra en la lista</returns>
+    public static bool EstaEnLaLista(Nodo nodoABuscar, List<Nodo> listaDeNodos)
+    {
+        if(listaDeNodos.Count > 0)
+        {
+            foreach(Nodo n in listaDeNodos)
+            {
+            if(n.EsIgualA(nodoABuscar))
+                return true;
+            }
+        }        
+
+        return false;
     }
 }

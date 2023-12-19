@@ -58,14 +58,18 @@ public class PuzzleIA : MonoBehaviour
 
         //Incluye los primeros sucesores en la lista de abiertos
         foreach(Nodo n in nodosSucesores)
-            nodosAbiertos.Add(n);
+            nodosAbiertos.Add(n);     
+
+        //Pruebas internas
+        MuestraListaAbiertos();   
         
         //El primer nodo actual se añade a la lista de cerrados
         nodosCerrados.Add(nodoActual);
         
         int numeroIntentos = 0;
 
-        while(nodosAbiertos.Count > 0)
+        //while(nodosAbiertos.Count > 0)
+        for(int i = 1; i <= 2; i++)
         {
             numeroIntentos++;
             Debug.Log("Intentos: " + numeroIntentos);
@@ -97,10 +101,11 @@ public class PuzzleIA : MonoBehaviour
                     Debug.Log("Índices recibidos + " + posiciones.Count);
                     foreach(int posicion in posiciones)
                     {
-                        nodosAbiertos.Add(nodosSucesores[posicion]);
+                        Debug.Log("Insertando sucesor");
+                        nodosAbiertos.Insert(0, nodosSucesores[posicion]);
                     }                    
                 }                
-            }
+            }            
         }
     }
 
@@ -114,8 +119,8 @@ public class PuzzleIA : MonoBehaviour
             //Debug.Log(nodosSucesores[s].EsIgualA(nodosAbiertos[0]));
             
             //El nodo NO estará en alguna de las listas si la misma está vacía o tiene elementos pero no contiene al nodo
-            bool estaEnAbiertos = (nodosAbiertos.Count > 0 && nodosAbiertos.Contains(nodosSucesores[s]));
-            bool estaEnCerrados = (nodosCerrados.Count > 0 && nodosCerrados.Contains(nodosSucesores[s]));
+            bool estaEnAbiertos = Nodo.EstaEnLaLista(nodosSucesores[s], nodosAbiertos);
+            bool estaEnCerrados = Nodo.EstaEnLaLista(nodosSucesores[s], nodosCerrados);
 
             if(!estaEnAbiertos && !estaEnCerrados)
                 indices.Add(s);
@@ -132,5 +137,16 @@ public class PuzzleIA : MonoBehaviour
     {        
         nodoActual.Desordenar();        
         cajaDibujo.text = nodoActual.Dibujar();       
+    }
+
+
+    //Métodos para pruebas internas
+    private void MuestraListaAbiertos()
+    {
+        Debug.Log("LISTA DE NODOS ABIERTOS: " + nodosAbiertos.Count + "\n");
+        for(int i = 0; i < nodosAbiertos.Count; i++)
+        {
+            Debug.Log(nodosAbiertos[i].Dibujar());
+        }
     }
 }
